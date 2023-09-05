@@ -28,4 +28,33 @@ use Illuminate\Database\Eloquent\Model;
 class ShortUrl extends Model
 {
     use HasFactory;
+
+    /**
+     * @param string|null $URl
+     */
+    public function setURl(?string $URl): void
+    {
+        $this->URl = $URl;
+    }
+
+    /**
+     * @param string|null $shortURL
+     */
+    public function setShortURL(?string $shortURL): void
+    {
+        $this->shortURL = $shortURL;
+    }
+
+    /**
+     * @param int $countClick
+     */
+    public function setCountClick(int $countClick): void
+    {
+        $this->countClick = $countClick;
+    }
+
+    public function devices()
+    {
+        return $this->belongsToMany(Device::class);
+    }
 }

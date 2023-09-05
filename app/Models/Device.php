@@ -24,4 +24,9 @@ use Illuminate\Database\Eloquent\Model;
 class Device extends Model
 {
     use HasFactory;
+
+    public function shortUrls()
+    {
+        return $this->belongsToMany(ShortUrl::class);
+    }
 }

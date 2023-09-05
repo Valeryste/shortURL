@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ShortURLController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+/*Route::get('/', function () {
     return view('welcome');
-});
+});*/
+
+//Route::post('/shortUrl','ShortURLController@store')->name('/shortUrl.store');
+/*Route::resource('',ShortUrlController::class)->names('shortURL');*/
+
