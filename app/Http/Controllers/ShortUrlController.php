@@ -15,9 +15,11 @@ class ShortUrlController extends Controller
      */
     public function index()
     {
+        $items = ShortUrl::all();
 
 
-        /*return view('shortUrl/index');*/
+
+        return view('shortUrl/index',compact('items'));
     }
 
     /**
@@ -47,7 +49,7 @@ class ShortUrlController extends Controller
 
 
         $newShortUrl = [
-            'URI'=>$originalUrl,
+            'URL'=>$originalUrl,
             'shortURL'=>$randomString,
             'created_at' => now(),
             'updated_at' => now(),
@@ -55,6 +57,7 @@ class ShortUrlController extends Controller
 
         DB::table('short_urls')->insert($newShortUrl);
 
+        redirect()->route('index');
     }
 
     /**
@@ -62,7 +65,8 @@ class ShortUrlController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $item = DB::table('short_urls')->find($id);
+        dd(__METHOD__);
     }
 
     /**
