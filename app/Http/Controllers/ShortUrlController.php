@@ -57,27 +57,42 @@ class ShortUrlController extends Controller
     public function show(string $shortUrl, Request $request)
     {
 
-        $item = ShortUrl::where('shortURL', $shortUrl)->first();
+        if(strpos($shortUrl, '+')){
+            str_replace('+','',$shortUrl);
 
-        if($item){
+            $shortUrl = substr($shortUrl, 0, strlen($shortUrl) - 1);
+            $item = ShortUrl::where('shortURL', $shortUrl)->first();
 
-            $device = Device::create([
-                'name' =>$request->header('User-Agent'),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            $device = $request->header('User-Agent');
 
-            $device->shortUrls()->attach($item);
+            $data = [
+                'countClick' => $item->countClick,
+                'device' => $device,
+            ];
 
-            ShortUrl::where('shortURL', $shortUrl)->increment('countClick');
-            return redirect()->away($item->URl);
+            return view('shortUrl/show', compact('data'));
 
+
+        } else {
+            $item = ShortUrl::where('shortURL', $shortUrl)->first();
+
+            if ($item) {
+
+                $device = Device::create([
+                    'name' => $request->header('User-Agent'),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                $device->shortUrls()->attach($item);
+
+                ShortUrl::where('shortURL', $shortUrl)->increment('countClick');
+                return redirect()->away($item->URl);
+
+            }
         }
     }
 
-    public function showInfo(){
-
-    }
 
 
     /**
