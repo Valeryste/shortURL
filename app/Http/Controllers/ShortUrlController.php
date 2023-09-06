@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Device;
 use App\Models\ShortUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,8 +17,6 @@ class ShortUrlController extends Controller
     public function index()
     {
         $items = ShortUrl::all();
-
-
 
         return view('shortUrl/index',compact('items'));
     }
@@ -55,7 +54,7 @@ class ShortUrlController extends Controller
             'updated_at' => now(),
         ];
 
-        DB::table('short_urls')->insert($newShortUrl);
+        ShortUrl::insert($newShortUrl);
 
         redirect()->route('index');
     }
@@ -63,11 +62,30 @@ class ShortUrlController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $shortUrl, Request $request)
     {
-        $item = DB::table('short_urls')->find($id);
-        dd(__METHOD__);
+        $item = ShortUrl::where('shortURL', $shortUrl)->first();
+
+        if($item){
+
+            $device = Device::create([
+                'name' =>$request->header('User-Agent'),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+
+            $device->shortUrls()->attach($item);
+
+            ShortUrl::where('shortURL', $shortUrl)->increment('countClick');
+            /*return redirect()->away($item->URl);*/
+
+        }
     }
+
+    public function showInfo(){
+
+    }
+
 
     /**
      * Show the form for editing the specified resource.

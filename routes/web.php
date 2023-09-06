@@ -19,4 +19,4 @@ use Illuminate\Support\Facades\Route;
 });*/
 
 //Route::post('/shortUrl','ShortURLController@store')->name('/shortUrl.store');
-Route::resource('',ShortUrlController::class)->names('shortURL');
+Route::resource('/shortUrl',ShortUrlController::class)->names('shortURL');

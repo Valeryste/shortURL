@@ -1,4 +1,4 @@
 @foreach($items as $item)
-    <a href = "{{route('shortURL.show',$item->id)}}" >{{$item->shortURL}}</a>
+    <a href = "{{route('shortURL.show',$item->shortURL)}}" >{{$item->shortURL}}</a>
 
 @endforeach
