@@ -7,6 +7,7 @@ use App\Models\ShortUrl;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 
 
 class ShortUrlController extends Controller
@@ -36,16 +37,7 @@ class ShortUrlController extends Controller
     {
         $originalUrl = $request->input('original_url');
 
-        $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-
-        $randomString = '';
-
-        for ($i = 0; $i < 5; $i++) {
-            $randomIndex = rand(0, strlen($chars) - 1);
-
-            $randomString .= $chars[$randomIndex];
-        }
-
+        $randomString = Str::random(5);
 
         $newShortUrl = [
             'URL'=>$originalUrl,
@@ -64,6 +56,7 @@ class ShortUrlController extends Controller
      */
     public function show(string $shortUrl, Request $request)
     {
+
         $item = ShortUrl::where('shortURL', $shortUrl)->first();
 
         if($item){
@@ -77,7 +70,7 @@ class ShortUrlController extends Controller
             $device->shortUrls()->attach($item);
 
             ShortUrl::where('shortURL', $shortUrl)->increment('countClick');
-            /*return redirect()->away($item->URl);*/
+            return redirect()->away($item->URl);
 
         }
     }
